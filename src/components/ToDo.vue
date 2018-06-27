@@ -59,19 +59,9 @@
 </template>
 
 <script>
-  import Firebase from 'firebase'
+  import firebase from '../configFirebase'
 
-  let config = {
-    apiKey: "AIzaSyDSFl6v6nSLkzfKeM6Uj5ee00PlrKWqUMs",
-    authDomain: "chatbot-13d86.firebaseapp.com",
-    databaseURL: "https://chatbot-13d86.firebaseio.com",
-    projectId: "chatbot-13d86",
-    storageBucket: "chatbot-13d86.appspot.com",
-    messagingSenderId: "44487227915"
-  };
-
-  let app = Firebase.initializeApp(config);
-  let db = app.database();
+  let db = firebase.database();
 
   let bookRef = db.ref('books');
 
@@ -103,13 +93,3 @@
     }
   }
 </script>
-
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-</style>

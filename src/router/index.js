@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import firebase from 'firebase'
+
 import Hello from '@/components/Hello'
 import ToDo from '@/components/ToDo'
 import About from '@/components/About'
@@ -9,7 +11,7 @@ import Signup from '@/components/Authenticate/Signup'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
 
   routes: [
@@ -26,7 +28,10 @@ export default new Router({
     {
       path: '/todo',
       name: 'ToDo',
-      component: ToDo
+      component: ToDo,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/contact',
@@ -46,4 +51,20 @@ export default new Router({
       component: Signup
     }
   ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    let currentUser = firebase.auth().currentUser;
+    let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+    if (currentUser && requiresAuth) {
+      next()
+    } else {
+      next({name: 'Login'})
+    }
+  }
+  next()
+});
+
+export default router;
